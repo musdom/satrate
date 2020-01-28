@@ -43,6 +43,6 @@
 
   <p>
     1 MYR = { Math.floor(1/satRate) } satoshis<br/>
-    Luno { elapsed }
+    Exchange rate from Luno, { elapsed }
   </p>
 </main>
