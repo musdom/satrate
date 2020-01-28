@@ -1,50 +1,48 @@
 <script>
-  import { onMount } from "svelte";
-  export let resObj;
-
+	import { onMount } from "svelte";
+  import moment from "moment";
+	
+	let myr = 1;
+	let sat = 1;
+	let satRate = null;
+  let elapsed = "";
+	
   onMount(async () => {
     let res = await fetch("/api/rate");
-    resObj = await res.text();
+    let resObj = await res.text();
     resObj = JSON.parse(resObj);
     console.log(resObj);
+    satRate = Number(resObj.last_trade)/1e8;
+    getSAT();
+    setInterval(() => {
+      elapsed = moment(resObj.timestamp).fromNow();
+    }, 1000)
   });
+	
+	function getMYR() {
+		myr = sat*satRate;
+		myr = myr.toLocaleString('en-MY', { maximumFractionDigits: 2 });
+	}
+	
+	function getSAT() {
+		sat = myr/satRate;
+		sat = sat.toLocaleString('en-MY', { maximumFractionDigits: 4 });
+	}
 </script>
 
 <main>
-  <h1>Svelte + Node.js API</h1>
-  <h2>
-    Deployed with
-    <a href="https://zeit.co/docs" target="_blank" rel="noreferrer noopener">
-      ZEIT Now
-    </a>
-    !
-  </h2>
+  <label>
+    MYR
+    <input type=text bind:value={myr} on:input={getSAT} on:change={getSAT} min=0>
+  </label>
+
+  <label>
+    SAT
+    <input type=text bind:value={sat} on:input={getMYR} on:change={getMYR} min=0>
+  </label>
+
   <p>
-    <a
-      href="https://github.com/zeit/now/tree/master/examples/svelte"
-      target="_blank"
-      rel="noreferrer noopener">
-      This project
-    </a>
-    is a
-    <a href="https://svelte.dev/">Svelte</a>
-    app with three directories,
-    <code>/public</code>
-    for static assets,
-    <code>/src</code>
-    for components and content, and
-    <code>/api</code>
-    which contains a serverless
-    <a href="https://nodejs.org/en/">Node.js</a>
-    function. See
-    <a href="/api/date">
-      <code>api/date</code>
-      for the Date API with Node.js
-    </a>
-    .
+    1 MYR = { Math.floor(1/satRate) } satoshis<br/>
+    Luno { elapsed }
   </p>
-  <br />
-  <!-- <h2>The date according to Node.js is:</h2>
-  <p>{date ? date : 'Loading date...'}</p> -->
-  <h2>{resObj ? resObj.last_trade : 'Loading rate...'}</h2>
 </main>
