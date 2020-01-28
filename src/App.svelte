@@ -1,14 +1,12 @@
 <script>
   import { onMount } from "svelte";
-  export let rate, resObj, age;
+  export let resObj;
 
   onMount(async () => {
     let res = await fetch("/api/rate");
     resObj = await res.text();
     resObj = JSON.parse(resObj);
     console.log(resObj);
-    age = Math.floor((Date.now() - resObj.timestamp)/1000);
-    rate = resObj.last_trade;
   });
 </script>
 
@@ -48,6 +46,5 @@
   <br />
   <!-- <h2>The date according to Node.js is:</h2>
   <p>{date ? date : 'Loading date...'}</p> -->
-  <h2>{rate ? rate : 'Loading rate...'}</h2>
-  <p>Live rate from { age } seconds ago</p>
+  <h2>{resObj ? resObj.last_trade : 'Loading rate...'}</h2>
 </main>
