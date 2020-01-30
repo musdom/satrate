@@ -42,67 +42,69 @@
 
 <main>
   <section class="section is-medium">
+    <div class="container">
 
-    <div class="columns is-centered">
-      <div class="column is-1">
-        <label class="label has-text-white">MYR</label>
-      </div>
-      <div class="column is-4">
-        <!-- <label class="label has-text-white">MYR</label> -->
-        <input 
-          class="input is-large" 
-          type="number" 
-          bind:value={myr} 
-          on:input={getSAT} on:change={getSAT} 
-          min=0
-        />
+      <div class="columns is-centered">
+        <div class="column is-1">
+          <label class="label has-text-white">MYR</label>
+        </div>
+        <div class="column is-4">
+          <!-- <label class="label has-text-white">MYR</label> -->
+          <input 
+            class="input is-large" 
+            type="number" 
+            bind:value={myr} 
+            on:input={getSAT} on:change={getSAT} 
+            min=0
+          />
+        </div>
+
+        <div class="column is-5">
+          <!-- <label class="label has-text-white">MYR</label> -->
+          <input 
+            class="input is-large has-background-dark has-text-light" 
+            type="text" 
+            bind:value={myrDisp} 
+            readonly
+          />
+        </div>
       </div>
 
-      <div class="column is-5">
-        <!-- <label class="label has-text-white">MYR</label> -->
-        <input 
-          class="input is-large has-background-dark has-text-light" 
-          type="text" 
-          bind:value={myrDisp} 
-          readonly
-        />
+      <div class="columns is-centered">
+        <div class="column is-1">
+          <label class="label has-text-white">SAT</label>
+        </div>
+
+        <div class="column is-4">
+          <!-- <label class="label has-text-white">SAT</label> -->
+          <input 
+            class="input is-large" 
+            type="number" 
+            bind:value={sat} 
+            on:input={getMYR} on:change={getMYR} 
+            min=0
+          />
+        </div>
+
+        <div class="column is-5">
+          <!-- <label class="label has-text-white">SAT</label> -->
+          <input 
+            class="input is-large has-background-dark has-text-light" 
+            type="text" 
+            bind:value={satDisp} 
+            readonly
+          />
+        </div>
+
       </div>
+
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <p>Exchange rate from Luno, { elapsed }</p>
+        </div>
+      </div>
+
     </div>
-
-    <div class="columns is-centered">
-      <div class="column is-1">
-        <label class="label has-text-white">SAT</label>
-      </div>
-
-      <div class="column is-4">
-        <!-- <label class="label has-text-white">SAT</label> -->
-        <input 
-          class="input is-large" 
-          type="number" 
-          bind:value={sat} 
-          on:input={getMYR} on:change={getMYR} 
-          min=0
-        />
-      </div>
-
-      <div class="column is-5">
-        <!-- <label class="label has-text-white">SAT</label> -->
-        <input 
-          class="input is-large has-background-dark has-text-light" 
-          type="text" 
-          bind:value={satDisp} 
-          readonly
-        />
-      </div>
-
-    </div>
-
-    <div class="columns is-centered">
-      <div class="column is-10">
-        <p>Exchange rate from Luno, { elapsed }</p>
-      </div>
-    </div>
-
   </section>
 
 </main>
