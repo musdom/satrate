@@ -1,4 +1,8 @@
-main {
+body {
+  background-color: hsl(258, 10%, 19%);
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+}
+/* main {
   align-content: center;
   box-sizing: border-box;
   display: grid;
@@ -8,11 +12,12 @@ main {
   line-height: 1.65;
   margin: 0 auto;
   max-width: 680px;
-  min-height: 100vh;
   padding: 72px 0;
   text-align: center;
-}
-h1 {
+  min-height: 100vh;
+  color: white;
+} */
+/* h1 {
   font-size: 45px;
 }
 h2 {
@@ -41,4 +46,4 @@ pre {
 code:before,
 code:after {
   content: '\`';
-}
+} */
