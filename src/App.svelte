@@ -9,17 +9,19 @@
   let satDisp = "";
 	let satRate = null;
   let elapsed = "";
+  let donation = 200;
 	
   onMount(async () => {
     let res = await fetch("/api/rate");
-    let resObj = await res.text();
-    resObj = JSON.parse(resObj);
+    let resObj = await res.json();
+    // resObj = JSON.parse(resObj);
     console.log(resObj);
-    satRate = Number(resObj.last_trade)/1e8;
+    satRate = Number(resObj.myr_price)/1e8;
     getSAT();
+    elapsed = moment(resObj.timestamp).fromNow();
     setInterval(() => {
       elapsed = moment(resObj.timestamp).fromNow();
-    }, 1000)
+    }, 30000)
   });
 	
 	function getMYR() {
@@ -38,72 +40,126 @@
     satDisp = sat.toLocaleString('en-MY', { maximumFractionDigits: 4 });
     myrDisp = myr.toLocaleString('en-MY', { maximumFractionDigits: 2 });
   }
+
 </script>
 
 <main>
-  <section class="section is-medium">
-    <div class="container">
+  <section class="hero">
+    <div class="hero-head">
+      <div class="container">
+      </div>
+    </div>
 
-      <div class="columns is-centered">
-        <div class="column is-1">
-          <label class="label has-text-white">MYR</label>
-        </div>
-        <div class="column is-4">
-          <!-- <label class="label has-text-white">MYR</label> -->
-          <input 
-            class="input is-large" 
-            type="number" 
-            bind:value={myr} 
-            on:input={getSAT} on:change={getSAT} 
-            min=0
-          />
+    <div class="hero-body">
+      <div class="container">
+
+        <div class="columns is-centered">
+          <div class="column is-10">
+            <h1 class="title has-text-light">
+              Satoshi? Apa tu?
+            </h1>
+            <h2 class="subtitle has-text-light">
+              1 BTC = 100,000,000 satoshi
+            </h2>
+          </div>
         </div>
 
-        <div class="column is-5">
-          <!-- <label class="label has-text-white">MYR</label> -->
-          <input 
-            class="input is-large has-background-dark has-text-light" 
-            type="text" 
-            bind:value={myrDisp} 
-            readonly
-          />
+        <div class="columns is-centered">
+          <!-- <div class="column is-1">
+            <label class="label has-text-white">MYR</label>
+          </div> -->
+
+          <div class="column is-5">
+            <div class="field has-addons">
+              <div class="control">
+                <input type="button" class="button is-large has-background-dark has-text-light" value="MYR" disabled/>
+              </div>
+              <div class="control is-expanded">
+                <input 
+                  class="input is-large" 
+                  type="number" 
+                  bind:value={myr} 
+                  on:input={getSAT} on:change={getSAT} 
+                  min=0
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="column is-5">
+            <input 
+              class="input is-large has-background-dark has-text-light" 
+              type="text" 
+              bind:value={myrDisp} 
+              readonly
+            />
+          </div>
+        </div>
+
+        <div class="columns is-centered">
+          <!-- <div class="column is-1">
+            <label class="label has-text-white">SAT</label>
+          </div> -->
+
+          <div class="column is-5">
+            <div class="field has-addons">
+              <div class="control">
+                <input type="button" class="button is-large has-background-dark has-text-light" value="SAT" disabled/>
+              </div>
+              <div class="control is-expanded">
+                <input 
+                  class="input is-large" 
+                  type="number" 
+                  bind:value={sat} 
+                  on:input={getMYR} on:change={getMYR} 
+                  min=0
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="column is-5">
+            <input 
+              class="input is-large has-background-dark has-text-light" 
+              type="text" 
+              bind:value={satDisp} 
+              readonly
+            />
+          </div>
+
         </div>
       </div>
 
-      <div class="columns is-centered">
-        <div class="column is-1">
-          <label class="label has-text-white">SAT</label>
-        </div>
+      <div class="container" style="padding-top: 5vh">
+        <div class="columns is-centered">
+          <div class="column is-5">
+            <p>
+              Exchange rate from <a target="_blank" rel="noopener noreferrer" href="https://www.coingecko.com">CoinGecko</a>, { elapsed }<br/>
+              <!-- Exchange rate from <a target="_blank" rel="noopener noreferrer" href="https://www.luno.com/trade/XBTMYR">Luno</a>, { elapsed }<br/> -->
+            </p>
+          </div>
 
-        <div class="column is-4">
-          <!-- <label class="label has-text-white">SAT</label> -->
-          <input 
-            class="input is-large" 
-            type="number" 
-            bind:value={sat} 
-            on:input={getMYR} on:change={getMYR} 
-            min=0
-          />
-        </div>
+          <div class="column is-5">
 
-        <div class="column is-5">
-          <!-- <label class="label has-text-white">SAT</label> -->
-          <input 
-            class="input is-large has-background-dark has-text-light" 
-            type="text" 
-            bind:value={satDisp} 
-            readonly
-          />
-        </div>
-
-      </div>
-
-      <div class="columns is-centered">
-        <div class="column is-10">
-          <p>Exchange rate from Luno, { elapsed }</p>
+            <form method="POST" action="https://btcpayjungle.com/api/v1/invoices" class="btcpay-form btcpay-form--block">
+              <div class="field has-addons">
+                <div class="control">
+                  <input class="input" type="number" name="price" value="0.2" step="0.01" min="0.01" />
+                </div>
+                <div class="control">
+                  <input type="submit" class="submit button has-background-dark has-text-light" name="submit" value="Donate (RM)" />
+                </div>
+              </div>
+                <input type="hidden" name="storeId" value="54fGsrKwLEKHHDJTTT35tujV37gfWiUQUPLDYWeN7bbR" />
+                <input type="hidden" name="currency" value="MYR" />
+            </form>
+            
+          </div>
         </div>
       </div>
+    </div>
 
+    <div class="hero-foot">
     </div>
   </section>
 
@@ -116,6 +172,30 @@
     margin: 0 auto; */
     color: white;
   }
+  a {
+    border-bottom: 1px solid white;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s ease;
+  }
+  a:hover {
+    border-bottom: 1px solid #3273dc;
+    color: white;
+  }
+  /* .donate-submit {
+    width: fit-content;
+  } */
+  /* .btcpay-form { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center;
+    border: 1px solid white;
+    border-radius: 4px;
+  } 
+  .btcpay-form--block { 
+    flex-direction: column; 
+  }  */
+
   /* .columns {
     border: 1px solid white
   } */
