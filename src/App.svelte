@@ -7,6 +7,7 @@
   let myrDisp = "";
 	let sat = 1;
   let satDisp = "";
+  let btcRate = null;
 	let satRate = null;
   let elapsed = "";
   let donation = 200;
@@ -16,7 +17,8 @@
     let resObj = await res.json();
     // resObj = JSON.parse(resObj);
     console.log(resObj);
-    satRate = Number(resObj.myr_price)/1e8;
+    btcRate = resObj.myr_price;
+    satRate = btcRate/1e8;
     getSAT();
     elapsed = moment(resObj.timestamp).fromNow();
     setInterval(() => {
@@ -26,13 +28,13 @@
 	
 	function getMYR() {
     if (typeof sat === 'undefined') return;
-		myr = sat*satRate;
+		myr = Number((sat*satRate).toFixed(2));
     separatorDisplay();
 	}
 	
 	function getSAT() {
     if (typeof myr === 'undefined') return;
-		sat = myr/satRate;
+		sat = Number((myr/satRate).toFixed(4));
     separatorDisplay()
 	}
 
@@ -59,7 +61,7 @@
               Satoshi? Apa tu?
             </h1>
             <h2 class="subtitle has-text-light">
-              1 BTC = 100,000,000 satoshi
+              1 BTC = 100,000,000 satoshi {#if btcRate}= RM {btcRate}{/if}
             </h2>
           </div>
         </div>
@@ -88,7 +90,7 @@
 
           <div class="column is-5">
             <input 
-              class="input is-large has-background-dark has-text-light" 
+              class="input is-medium has-background-dark has-text-light" 
               type="text" 
               bind:value={myrDisp} 
               readonly
@@ -120,7 +122,7 @@
 
           <div class="column is-5">
             <input 
-              class="input is-large has-background-dark has-text-light" 
+              class="input is-medium has-background-dark has-text-light" 
               type="text" 
               bind:value={satDisp} 
               readonly
@@ -133,10 +135,15 @@
       <div class="container" style="padding-top: 5vh">
         <div class="columns is-centered">
           <div class="column is-5">
-            <p>
-              Exchange rate from <a target="_blank" rel="noopener noreferrer" href="https://www.coingecko.com">CoinGecko</a>, { elapsed }<br/>
-              <!-- Exchange rate from <a target="_blank" rel="noopener noreferrer" href="https://www.luno.com/trade/XBTMYR">Luno</a>, { elapsed }<br/> -->
-            </p>
+            {#if btcRate}
+              <p>
+                Exchange rate from <a target="_blank" rel="noopener noreferrer" href="https://www.coingecko.com">CoinGecko</a>, { elapsed }<br/>
+                <!-- Exchange rate from <a target="_blank" rel="noopener noreferrer" href="https://www.luno.com/trade/XBTMYR">Luno</a>, { elapsed }<br/> -->
+              </p>
+            {:else}
+              <p>Fetching exchange rate...</p>
+              <progress class="progress" max="100">15%</progress>
+            {/if}
           </div>
 
           <div class="column is-5">
