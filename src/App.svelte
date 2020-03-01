@@ -34,12 +34,12 @@
 	
 	function getSAT() {
     if (typeof myr === 'undefined') return;
-		sat = Number((myr/satRate).toFixed(4));
+		sat = Number((myr/satRate).toFixed(0));
     separatorDisplay()
 	}
 
   function separatorDisplay() {
-    satDisp = sat.toLocaleString('en-MY', { maximumFractionDigits: 4 });
+    satDisp = sat.toLocaleString('en-MY', { maximumFractionDigits: 0 });
     myrDisp = myr.toLocaleString('en-MY', { maximumFractionDigits: 2 });
   }
 
