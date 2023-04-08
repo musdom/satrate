@@ -134,7 +134,7 @@
 
       <div class="container" style="padding-top: 5vh">
         <div class="columns is-centered">
-          <div class="column is-5">
+          <div class="column is-10">
             {#if btcRate}
               <p>
                 Exchange rate from <a target="_blank" rel="noopener noreferrer" href="https://www.coingecko.com">CoinGecko</a>, { elapsed }<br/>
@@ -146,7 +146,7 @@
             {/if}
           </div>
 
-          <div class="column is-5">
+          <!-- <div class="column is-5">
 
             <form method="POST" action="https://btcpayjungle.com/api/v1/invoices" class="btcpay-form btcpay-form--block">
               <div class="field has-addons">
@@ -161,7 +161,7 @@
                 <input type="hidden" name="currency" value="MYR" />
             </form>
             
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
